@@ -1,0 +1,91 @@
+.slider,
+#videoSlider {
+	width: 650px;
+	height: 450px;
+	list-style: none;
+	/* Prevent FOUC (see FAQ page) and keep things readable if javascript is disabled */
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+/* Navigation Links */
+.anythingSlider-default .anythingControls { outline: 0; display: none; }
+.anythingSlider-default .anythingControls ul { margin: 0; padding: 0; }
+.anythingSlider-default .anythingControls ul li { display: inline; }
+
+/* navigationSize window */
+.anythingSlider-default .anythingControls .anythingNavWindow {
+	overflow: hidden;
+	float: left;
+}
+/***********************
+  COMMON SLIDER STYLING
+ ***********************/
+/* Overall Wrapper */
+.anythingSlider {
+	display: block;
+	overflow: visible !important;
+}
+/* anythingSlider viewport window */
+.anythingSlider .anythingWindow {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+/* anythingSlider base (original element) */
+.anythingSlider .anythingBase {
+	background: transparent;
+	list-style: none;
+	position: absolute;
+	overflow: visible !important;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+/* all panels inside the slider; horizontal mode */
+.anythingSlider .panel {
+	background: transparent;
+	display: block;
+	overflow: hidden;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+/* vertical mode */
+.anythingSlider .vertical .panel {
+	float: none;
+}
+/* fade mode */
+.anythingSlider .fade .panel {
+	float: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+/* fade mode active page - visible & on top */
+.anythingSlider .fade .activePage {
+	z-index: 1;
+}
+
+/***********************
+  RTL STYLING
+ ***********************/
+/* slider autoplay right-to-left, reverse order of nav links to look better */
+.anythingSlider.rtl .anythingWindow {
+	direction: ltr;
+	unicode-bidi: bidi-override;
+}
+.anythingSlider.rtl .anythingControls ul { float: left; } /* move nav link group to left */
+.anythingSlider.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
+.anythingSlider.rtl .start-stop { /* float: right; */ } /* move start/stop button - in case you want to switch sides */
+
+/* probably not necessary, but added just in case */
+.anythingSlider,
+.anythingSlider .anythingWindow {
+	transition-duration: 0;
+	-o-transition-duration: 0;
+	-moz-transition-duration: 0;
+	-webkit-transition-duration: 0;
+}
