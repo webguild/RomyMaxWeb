@@ -637,10 +637,18 @@ background-position: 0 -210px;
 /*logos*/
  .logo-block{
 	background: url(../img/wide-fade.png) no-repeat top left;
-	padding-top: 23px;
-	padding-bottom:15px;
-	padding-left:14%;
+	padding: 23px 14% 15px;
+	
 	position: relative;
+}
+.slider-wrapper {
+	overflow: hidden;
+	height: 68px;
+	overflow: hidden;
+}
+
+.slider-band {
+	width: 9999px;
 }
  .logo-block.no-fade{
 	background: none;
@@ -684,13 +692,9 @@ background-position: 0 -210px;
 
 .logo-block .prev, .logo-block .next {
 	padding: 0;
-	margin-top: -27px !important;
+	margin-top: -22px !important;
 }
 
-.logo-block .next {
-	position: static !important;
-	margin: 10px 0 0 20px !important;
-}
 /*accsesories*/
 .serie .accessories{
 	margin:auto;

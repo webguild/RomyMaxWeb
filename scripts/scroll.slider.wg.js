@@ -34,9 +34,10 @@
 		nextSelector: '.next',
 		middleLineOffset: 40,
 		middleLineGap: 75,
-		offsetTop: 40,
-		offsetBottom: -40,
+		offsetTop: 0,
+		offsetBottom: 80,
 		fadeSpeed: 500,
+		slideSpeed: 300,
 		trottleTime: 200
 	};
 
@@ -61,8 +62,8 @@
 
 		this.$pages = this.$paginator.children().not(this.options.prevSelector).not(this.options.nextSelector);
 		this.$prevNext = this.$el.find(this.options.prevSelector).add( this.$el.find(this.options.nextSelector) );
-		this.$prevNext = this.$prevNext.add( this.$paginator.find(this.options.prevSelector) )
-							.add( this.$paginator.find(this.options.nextSelector) );
+		//this.$prevNext = this.$prevNext.add( this.$paginator.find(this.options.prevSelector) )
+		//					.add( this.$paginator.find(this.options.nextSelector) );
 
 		this.activeIdx = 0;
 		this.setActive();
@@ -80,6 +81,31 @@
 		this.$el.on('click', this.options.openButtonSelector, {self: this}, this.openSlide);
 		this.$el.on('click', this.options.closeButtonSelector, {self: this}, this.closeSlide);
 		
+		//Слайдинг табов
+		
+		this.pagesWidth = this.$pages.outerWidth(true);
+		var pagerWidth = this.pagesWidth * this.$pages.length;
+		
+		
+		if (pagerWidth > this.$paginator.width() ) {
+			this.$paginator.append('<span class="prev"></span><span class="next"></span>');
+			this.$pages.wrapAll('<div class="slider-band"></div>');
+			this.$paginator.find('.slider-band').wrapAll('<div class="slider-wrapper"></div>');
+
+			var visibleTabs = this.$paginator.width() / this.pagesWidth;
+			visibleTabs = Math.ceil(visibleTabs);
+
+			var prevWidth = this.$paginator.find('.slider-wrapper').width();
+			var nextWidth = visibleTabs * this.pagesWidth;
+			this.$paginator.find('.slider-wrapper').width(nextWidth).css({ 'margin-left': -(nextWidth - prevWidth)/2 });
+
+			this.pagerPosition = 0;
+			this.maxPagerPosition = this.$pages.length - visibleTabs;
+			this.$paginator.find('.prev').hide();
+
+			this.$paginator.on('click', '.prev, .next', { self: this }, this.pagerPrevNext);
+			this.$paginator.on('mousedown, selectstart', '.prev, .next', function() {return false;} );
+		}
 		
 	};
 
@@ -166,6 +192,34 @@
 		self.activeIdx = self.activeIdx >= self.$pages.length ? self.$pages.length - 1 : self.activeIdx;
 		
 		self.setActive();
+	};
+
+	ScrollSLider.prototype.pagerPrevNext = function (e) {
+		e.preventDefault();
+
+		var $this = $(e.currentTarget);
+		var self = e.data.self;
+
+		self.pagerPosition += $this.is('.prev') ? -1 : 1;
+		self.pagerPosition = self.pagerPosition < 0 ? 0 : self.pagerPosition;
+		self.pagerPosition = self.pagerPosition >= self.maxPagerPosition  ? self.maxPagerPosition - 1 : self.pagerPosition;
+
+		self.$paginator.find('.slider-band').stop(true, false).animate({ 'margin-left': -self.pagesWidth * self.pagerPosition }, self.options.slideSpeed);
+
+		if (self.pagerPosition == 0) {
+			self.$paginator.find('.prev').hide();
+		} else {
+			self.$paginator.find('.prev').show();
+		}
+
+		if (self.pagerPosition == self.maxPagerPosition - 1) {
+			self.$paginator.find('.next').hide();
+		} else {
+			self.$paginator.find('.next').show();
+		}
+
+		
+				
 	};
 
 	ScrollSLider.prototype.scrollCallback = function (e, delta, scrollSpeed) {
