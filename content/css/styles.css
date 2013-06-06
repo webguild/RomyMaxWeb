@@ -640,6 +640,7 @@ background-position: 0 -210px;
 	padding-top: 23px;
 	padding-bottom:15px;
 	padding-left:14%;
+	position: relative;
 }
  .logo-block.no-fade{
 	background: none;
@@ -679,6 +680,16 @@ background-position: 0 -210px;
 .logo-block img{
 	vertical-align:middle;
 	display:inline-block;
+}
+
+.logo-block .prev, .logo-block .next {
+	padding: 0;
+	margin-top: -27px !important;
+}
+
+.logo-block .next {
+	position: static !important;
+	margin: 10px 0 0 20px !important;
 }
 /*accsesories*/
 .serie .accessories{
@@ -1475,7 +1486,7 @@ span.question {
 	min-width: 1000px;
 	position:relative;
 }
-.seria-slider-wrap .left-arrow{
+.seria-slider-wrap .left-arrow, .logo-block .prev {
 	position:absolute;
 	top:50%;
 	left:10%;
@@ -1486,10 +1497,10 @@ span.question {
 	margin-top:-25px;
 	cursor:pointer;
 }
-.seria-slider-wrap .left-arrow:hover{
+.seria-slider-wrap .left-arrow:hover, .logo-block .prev:hover {
 	background:url(../img/slider-arrows.png) no-repeat 0 -52px;
 }
-.seria-slider-wrap .right-arrow{
+.seria-slider-wrap .right-arrow, .logo-block .next {
 	position:absolute;
 	top:50%;
 	right:10%;
@@ -1500,7 +1511,7 @@ span.question {
 	margin-top:-25px;
 	cursor:pointer;
 }
-.seria-slider-wrap .right-arrow:hover{
+.seria-slider-wrap .right-arrow:hover, .logo-block .next:hover {
 	background:url(../img/slider-arrows.png) no-repeat -35px -52px;
 }
 .seria-slider{

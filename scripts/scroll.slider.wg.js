@@ -49,24 +49,32 @@
 		this.isSlideOpen = false;
 		this.isTrottle = false;
 		
-		if (ScrollSLider.defaults.paginator == 'next')
+		if (this.options.paginator == 'next')
 			this.$paginator = this.$el.next();
 		else 
 			this.$paginator =  this.$el.find(this.options.paginator);
 
-		this.$pages = this.$paginator.children();
+		this.$pages = this.$paginator.children().not(this.options.prevSelector).not(this.options.nextSelector);
 
 		this.activeIdx = 0;
 		this.setActive();
 
 		this.$el.find(this.options.closeButtonSelector).fadeOut(0);
 		
+		//Выбор слайда через таб
 		this.$pages.on('click', {self: this}, this.pagerClick);
+		this.$prevNext = this.$el.find(this.options.prevSelector).add( this.$el.find(this.options.nextSelector) );
+		this.$prevNext = this.$prevNext.add( this.$paginator.find(this.options.prevSelector) )
+							.add( this.$paginator.find(this.options.nextSelector) );
+
+		console.log(this.$prevNext)
+		//Выбор слайда стрелками
+		this.$prevNext.on('click', {self: this}, this.prevNext);
+		this.$prevNext.on('mousedown, selectstart', function() {return false;} );
+		
+		//Открытие/закрытие слайдов
 		this.$el.on('click', this.options.openButtonSelector, {self: this}, this.openSlide);
 		this.$el.on('click', this.options.closeButtonSelector, {self: this}, this.closeSlide);
-		this.$el.on('click', this.options.prevSelector, {self: this}, this.prevNext);
-		this.$el.on('click', this.options.nextSelector, {self: this}, this.prevNext);
-		console.log(this.$el.find(this.options.closeButtonSelector) );
 		
 		
 	};
