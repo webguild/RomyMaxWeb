@@ -34,6 +34,8 @@
 		nextSelector: '.next',
 		middleLineOffset: 40,
 		middleLineGap: 75,
+		offsetTop: 40,
+		offsetBottom: -40,
 		fadeSpeed: 500,
 		trottleTime: 200
 	};
@@ -144,7 +146,7 @@
 		var $this = $(e.currentTarget);
 		var self = e.data.self;
 
-		self.activeIdx = $this.index();
+		self.activeIdx = self.$pages.index(this);
 		self.setActive();
 	};
 
@@ -163,6 +165,7 @@
 	};
 
 	ScrollSLider.prototype.scrollCallback = function (e, delta, scrollSpeed) {
+
 		//delta: -1 - вниз, +1 - вверх
 		if (this.isTrottle) {
 			e.preventDefault();
@@ -174,6 +177,7 @@
 		setTimeout(function () {
 			self.isTrottle = false;
 		}, this.options.trottleTime);
+	console.log(delta)
 		
 		if (delta < 0 && this.activeIdx < this.$pages.length - 1 && !this.isSlideOpen) {
 			e.preventDefault();
@@ -213,10 +217,11 @@
 	//Mousewheel Event Callback
 	WindowListener.prototype.windowMousewheel = function (e, delta, deltaX, deltaY) {
 		var self = e.data.self;
+		
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj = self.listeners[i];
 			if (obj.inRange) {
-				obj.scrollCallback(e, deltaY, WindowListener.scrollSpeed || 0 );
+				obj.scrollCallback(e, delta, WindowListener.scrollSpeed || 0 );
 			}
 				
 		}
@@ -225,31 +230,39 @@
 
 	//Windowscroll Event Callback
 	WindowListener.prototype.windowScroll = function (e) {
+		//console.log($(document).scrollTop())
 		var self = e.data.self;
 		
 		
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj =  self.listeners[i];
 
-			/*//Средняя линия слайдера
-			var objMiddleLine = obj.$el.outerHeight() / 2 +  obj.$el.offset().top;
-			if (!obj.$el.has(obj.$pager)) 
-				objMiddleLine += obj.$pager.outerHeight() / 2;
+			//Средняя линия слайдера
+			//var objMiddleLine = obj.$el.outerHeight() / 2 +  obj.$el.offset().top;
+			//if (!obj.$el.has(obj.$pager)) 
+			//	objMiddleLine += obj.$pager.outerHeight() / 2;
 			//Средняя линия окна
-			var windowMiddleLine = $(document).scrollTop() + $(window).height() / 2 + obj.options.middleLineOffset;*/
+			//var windowMiddleLine = $(document).scrollTop() + $(window).height() / 2 + obj.options.middleLineOffset;
 			
-			
+			var sliderHeight = obj.$el.outerHeight();
+			if (!obj.$el.has(obj.$pager)) 
+				sliderHeight += obj.$pager.outerHeight();
 
+			var sliderTop = obj.$el.offset().top + obj.options.offsetTop;
+			var windowTop = $(document).scrollTop();
+
+			var sliderBottom = sliderTop - obj.options.offsetTop + sliderHeight + obj.options.offsetBottom;
+			var windowBottom = windowTop + $(window).height();
+			//console.log(windowTop < sliderTop && windowBottom > sliderBottom, windowTop, sliderTop, windowBottom, sliderBottom);
 			//Определение попадания слайдера в пределы окна
-			if ( $(document).scrollTop() < obj.$el.offset().top + obj.options.offsetTop
-				&& ( $(document).scrollTop() + $(window).height() ) > 
-					(obj.$el.offset().top + obj.$el.outerHeight(true) + obj.$paginator.outerHeight(true) + obj.options.offsetBottom) 
-			) {
+			if (windowTop < sliderTop && windowBottom > sliderBottom ) {
 
-			/*if (Math.abs(windowMiddleLine - objMiddleLine) < obj.options.middleLineGap
-				|| ) {*/
+			//if (Math.abs(windowMiddleLine - objMiddleLine) < obj.options.middleLineGap
+			//	|| ) {
+		
 				obj.inRange = true;
 			} else {
+				
 				obj.inRange = false;
 			}
 

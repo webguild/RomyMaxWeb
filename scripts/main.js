@@ -122,7 +122,7 @@ $(function () {
 //Запуск слайдера с прокруткой
 $(function () {
 
-	var sliders = $('.techs').scrollSlider({ fadeSpeed: 500 });
+	var sliders = $('.techs').eq(0).scrollSlider({ fadeSpeed: 500 });
 	sliders = sliders.add( $('.seria-slider-wrap').scrollSlider({
 		slideSelector: '.seria-slider li',
 		paginator: '.seria-slider-pag',
