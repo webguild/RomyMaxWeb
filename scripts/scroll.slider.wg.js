@@ -55,6 +55,9 @@
 			this.$paginator =  this.$el.find(this.options.paginator);
 
 		this.$pages = this.$paginator.children().not(this.options.prevSelector).not(this.options.nextSelector);
+		this.$prevNext = this.$el.find(this.options.prevSelector).add( this.$el.find(this.options.nextSelector) );
+		this.$prevNext = this.$prevNext.add( this.$paginator.find(this.options.prevSelector) )
+							.add( this.$paginator.find(this.options.nextSelector) );
 
 		this.activeIdx = 0;
 		this.setActive();
@@ -63,9 +66,7 @@
 		
 		//Выбор слайда через таб
 		this.$pages.on('click', {self: this}, this.pagerClick);
-		this.$prevNext = this.$el.find(this.options.prevSelector).add( this.$el.find(this.options.nextSelector) );
-		this.$prevNext = this.$prevNext.add( this.$paginator.find(this.options.prevSelector) )
-							.add( this.$paginator.find(this.options.nextSelector) );
+		
 
 		console.log(this.$prevNext)
 		//Выбор слайда стрелками
@@ -88,6 +89,20 @@
 		//Смена слайда с анимацией
 		this.$slides.eq(this.activeIdx).fadeIn(this.options.fadeSpeed)
 			.siblings().stop(true, true).fadeOut(0);
+
+		//Скрытие/отображение стрелок
+		if (this.activeIdx == 0) {
+			this.$prevNext.filter(this.options.prevSelector).hide();
+		} else {
+			this.$prevNext.filter(this.options.prevSelector).show();
+		}
+		//console.log(this.activeIdx >= this.$pages - 1, this.activeIdx, this.$pages.length - 1)
+		if (this.activeIdx >= this.$pages.length - 1) {
+			this.$prevNext.filter(this.options.nextSelector).hide();
+		} else {
+			this.$prevNext.filter(this.options.nextSelector).show();
+		}
+
 	}
 
 	//Функции обработки событий
