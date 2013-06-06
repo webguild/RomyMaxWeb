@@ -32,8 +32,8 @@
 		hidenBlockSelector: '.hidden-block',
 		prevSelector: '.prev',
 		nextSelector: '.next',
-		offsetTop: -40,
-		offsetBottom: -40,
+		middleLineOffset: 40,
+		middleLineGap: 75,
 		fadeSpeed: 500,
 		trottleTime: 200
 	};
@@ -67,8 +67,6 @@
 		//Выбор слайда через таб
 		this.$pages.on('click', {self: this}, this.pagerClick);
 		
-
-		console.log(this.$prevNext)
 		//Выбор слайда стрелками
 		this.$prevNext.on('click', {self: this}, this.prevNext);
 		this.$prevNext.on('mousedown, selectstart', function() {return false;} );
@@ -96,7 +94,7 @@
 		} else {
 			this.$prevNext.filter(this.options.prevSelector).show();
 		}
-		//console.log(this.activeIdx >= this.$pages - 1, this.activeIdx, this.$pages.length - 1)
+
 		if (this.activeIdx >= this.$pages.length - 1) {
 			this.$prevNext.filter(this.options.nextSelector).hide();
 		} else {
@@ -232,12 +230,24 @@
 		
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj =  self.listeners[i];
-//console.log($(document).scrollTop() < obj.$el.offset().top + obj.options.offsetTop, $(document).scrollTop(), obj.$el.offset().top + obj.options.offsetTop)
+
+			/*//Средняя линия слайдера
+			var objMiddleLine = obj.$el.outerHeight() / 2 +  obj.$el.offset().top;
+			if (!obj.$el.has(obj.$pager)) 
+				objMiddleLine += obj.$pager.outerHeight() / 2;
+			//Средняя линия окна
+			var windowMiddleLine = $(document).scrollTop() + $(window).height() / 2 + obj.options.middleLineOffset;*/
+			
+			
+
 			//Определение попадания слайдера в пределы окна
 			if ( $(document).scrollTop() < obj.$el.offset().top + obj.options.offsetTop
 				&& ( $(document).scrollTop() + $(window).height() ) > 
 					(obj.$el.offset().top + obj.$el.outerHeight(true) + obj.$paginator.outerHeight(true) + obj.options.offsetBottom) 
 			) {
+
+			/*if (Math.abs(windowMiddleLine - objMiddleLine) < obj.options.middleLineGap
+				|| ) {*/
 				obj.inRange = true;
 			} else {
 				obj.inRange = false;
