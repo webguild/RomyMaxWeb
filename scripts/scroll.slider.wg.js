@@ -17,7 +17,7 @@
 		this.el = element;
 		element.ui = this;
 		this.$el = $(this.el);
-		this.options = $.extend(ScrollSLider.defaults, options);
+		this.options = $.extend({}, ScrollSLider.defaults,options);
 
 		//Инициализация
 		this.initialize();
@@ -28,7 +28,7 @@
 		paginator: 'next',
 		slideSelector: '.tech-item',
 		openButtonSelector: 'a.show',
-		closeButtonSelector: 'div.close-block, .close',
+		closeButtonSelector: 'div.close-block, .close, .hide',
 		hidenBlockSelector: '.hidden-block',
 		prevSelector: '.prev',
 		nextSelector: '.next',
@@ -58,13 +58,15 @@
 
 		this.activeIdx = 0;
 		this.setActive();
+
+		this.$el.find(this.options.closeButtonSelector).fadeOut(0);
 		
 		this.$pages.on('click', {self: this}, this.pagerClick);
 		this.$el.on('click', this.options.openButtonSelector, {self: this}, this.openSlide);
 		this.$el.on('click', this.options.closeButtonSelector, {self: this}, this.closeSlide);
 		this.$el.on('click', this.options.prevSelector, {self: this}, this.prevNext);
 		this.$el.on('click', this.options.nextSelector, {self: this}, this.prevNext);
-		
+		console.log(this.$el.find(this.options.closeButtonSelector) );
 		
 		
 	};
@@ -84,12 +86,14 @@
 	//Открытие слайда
 	ScrollSLider.prototype.openSlide = function (e) {
 		e.preventDefault();
-
+		
 		var $this = $(e.currentTarget);
 		var self = e.data.self;
 		
-		$this.fadeOut(self.options.fadeSpeed).closest(self.options.slideSelector)
-			.find(self.options.hidenBlockSelector).fadeIn(self.options.fadeSpeed);
+		$this.closest(self.options.slideSelector)				//Поиск слайда
+			.find(self.options.openButtonSelector).hide()			//Скрытие кнопки отображения а
+			.end().find(self.options.closeButtonSelector).show()		//Отображение кнопки показа
+			.end().find(self.options.hidenBlockSelector).stop(true, true).fadeIn(self.options.fadeSpeed); //Анимация слайда
 
 		self.isSlideOpen = true;
 		
@@ -101,13 +105,12 @@
 
 		var $this = $(e.currentTarget);
 		var self = e.data.self;
-
-		$this.closest(self.options.slideSelector)
-			.find(self.options.hidenBlockSelector).fadeOut(self.options.fadeSpeed)
-			.end().find(self.options.openButtonSelector).fadeIn(self.options.fadeSpeed);
-
-		//$(document).scrollTop(self.$el.offset().top - 100);
-		$('body,html').animate({ 'scrollTop': self.$el.offset().top - 100 });
+		$this.closest(self.options.slideSelector)				//Поиск слайда
+			.find(self.options.openButtonSelector).show()			//Скрытие кнопки отображения а
+			.end().find(self.options.closeButtonSelector).hide()		//Отображение кнопки показа
+			.end().find(self.options.hidenBlockSelector).stop(true, true).fadeOut(self.options.fadeSpeed); //Анимация слайда
+		
+		$('body,html').stop(true, true).animate({ 'scrollTop': self.$el.offset().top - 100 });
 
 		self.isSlideOpen = false;
 
