@@ -45,7 +45,10 @@
 	ScrollSLider.prototype.initialize = function () {
 		this.$slides = this.$el.find(this.options.slideSelector);
 
-		(new WindowListener()).listenTo(this);
+		if (! ($.browser.msie && $.browser.version < 9 ) ) {
+			(new WindowListener()).listenTo(this);
+		}
+		
 		
 		this.inRange = false;
 		this.isSlideOpen = false;
@@ -64,7 +67,7 @@
 		this.activeIdx = 0;
 		this.setActive();
 
-		this.$el.find(this.options.closeButtonSelector).fadeOut(0);
+		this.$el.find(this.options.closeButtonSelector).hide();
 		
 		//Выбор слайда через таб
 		this.$pages.on('click', {self: this}, this.pagerClick);
@@ -87,8 +90,9 @@
 			.siblings().removeClass('active');
 
 		//Смена слайда с анимацией
-		this.$slides.eq(this.activeIdx).fadeIn(this.options.fadeSpeed)
-			.siblings().stop(true, true).fadeOut(0);
+		this.$slides.eq(this.activeIdx).fadeIn(this.options.fadeSpeed);
+		this.$slides.not(this.$slides.eq(this.activeIdx)).stop(true, true).fadeOut(0);
+			
 
 		//Скрытие/отображение стрелок
 		if (this.activeIdx == 0) {
@@ -177,7 +181,6 @@
 		setTimeout(function () {
 			self.isTrottle = false;
 		}, this.options.trottleTime);
-	console.log(delta)
 		
 		if (delta < 0 && this.activeIdx < this.$pages.length - 1 && !this.isSlideOpen) {
 			e.preventDefault();
@@ -217,7 +220,7 @@
 	//Mousewheel Event Callback
 	WindowListener.prototype.windowMousewheel = function (e, delta, deltaX, deltaY) {
 		var self = e.data.self;
-		
+
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj = self.listeners[i];
 			if (obj.inRange) {
