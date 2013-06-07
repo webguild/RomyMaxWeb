@@ -34,8 +34,8 @@
 		nextSelector: '.next',
 		middleLineOffset: 40,
 		middleLineGap: 75,
-		offsetTop: 0,
-		offsetBottom: 80,
+		offsetTop: 80,
+		offsetBottom: 0,
 		fadeSpeed: 500,
 		slideSpeed: 300,
 		trottleTime: 200
