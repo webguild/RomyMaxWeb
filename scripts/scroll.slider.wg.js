@@ -34,7 +34,7 @@
 		nextSelector: '.next',
 		middleLineOffset: 40,
 		middleLineGap: 75,
-		offsetTop: 80,
+		offsetTop: 0,
 		offsetBottom: 0,
 		fadeSpeed: 500,
 		slideSpeed: 300,
@@ -86,21 +86,21 @@
 		this.pagesWidth = this.$pages.outerWidth(true);
 		var pagerWidth = this.pagesWidth * this.$pages.length;
 		
-		
+		//Добавление стрелок к пигинатору если длина его элементов больше его ширины
 		if (pagerWidth > this.$paginator.width() ) {
 			this.$paginator.append('<span class="prev"></span><span class="next"></span>');
 			this.$pages.wrapAll('<div class="slider-band"></div>');
 			this.$paginator.find('.slider-band').wrapAll('<div class="slider-wrapper"></div>');
 
-			var visibleTabs = this.$paginator.width() / this.pagesWidth;
-			visibleTabs = Math.ceil(visibleTabs);
+			this.visiblePages = this.$paginator.width() / this.pagesWidth;
+			this.visiblePages = Math.ceil(this.visiblePages);
 
 			var prevWidth = this.$paginator.find('.slider-wrapper').width();
-			var nextWidth = visibleTabs * this.pagesWidth;
+			var nextWidth = this.visiblePages * this.pagesWidth;
 			this.$paginator.find('.slider-wrapper').width(nextWidth).css({ 'margin-left': -(nextWidth - prevWidth)/2 });
 
 			this.pagerPosition = 0;
-			this.maxPagerPosition = this.$pages.length - visibleTabs;
+			this.maxPagerPosition = this.$pages.length - this.visiblePages + 1;
 			this.$paginator.find('.prev').hide();
 
 			this.$paginator.on('click', '.prev, .next', { self: this }, this.pagerPrevNext);
@@ -131,6 +131,17 @@
 			this.$prevNext.filter(this.options.nextSelector).hide();
 		} else {
 			this.$prevNext.filter(this.options.nextSelector).show();
+		}
+
+		//Прокручивание табов при достижении края
+		if (typeof this.pagerPosition == "number") {
+			
+			if (this.pagerPosition + this.visiblePages <= this.activeIdx) {
+				this.$paginator.find('.next').click();
+			}
+			if (this.pagerPosition > this.activeIdx) {
+				this.$paginator.find('.prev').click();
+			}
 		}
 
 	}
