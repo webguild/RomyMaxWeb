@@ -68,7 +68,7 @@
 		this.activeIdx = 0;
 
 		//Переход на слайдер и врокручивание на нужный таб при хеше
-		if (location.hash.toString().split('#')[1].split('/')[0] == this.$el.attr('name') ) {
+		if (location.hash.toString() && location.hash.toString().split('#')[1].split('/')[0] == this.$el.attr('name') ) {
 			this.activeIdx = (location.hash.toString().split('/')[1] || 1) - 1;
 			
 			var self = this;
