@@ -645,6 +645,8 @@ background-position: 0 -210px;
 	overflow: hidden;
 	height: 68px;
 	overflow: hidden;
+	margin-top: -23px;
+	padding-top: 23px;
 }
 
 .slider-band {
