@@ -219,7 +219,7 @@ $(function () {
 //Запуск слайдера с прокруткой
 
 $(function () {
-
+	
 	var sliders = $('.block .techs').scrollSlider({ fadeSpeed: 500 });
 	sliders = sliders.add( $('.seria-slider-wrap').scrollSlider({
 		slideSelector: '.seria-slider li',

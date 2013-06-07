@@ -66,6 +66,19 @@
 							.add( this.$paginator.find(this.options.nextSelector) );
 
 		this.activeIdx = 0;
+
+		//Переход на слайдер и врокручивание на нужный таб при хеше
+		if (location.hash.toString().split('#')[1].split('/')[0] == this.$el.attr('name') ) {
+			this.activeIdx = (location.hash.toString().split('/')[1] || 1) - 1;
+			
+			var self = this;
+			setTimeout(function () {
+				$(document).scrollTop(self.$el.offset().top - 100);
+			}, 1000);
+			
+		}
+
+
 		this.setActive();
 
 		this.$el.find(this.options.closeButtonSelector).hide();
@@ -81,8 +94,9 @@
 		this.$el.on('click', this.options.openButtonSelector, {self: this}, this.openSlide);
 		this.$el.on('click', this.options.closeButtonSelector, {self: this}, this.closeSlide);
 		
-		//Слайдинг табов
 		
+
+		//Слайдинг табов
 		this.pagesWidth = this.$pages.outerWidth(true);
 		var pagerWidth = this.pagesWidth * this.$pages.length;
 		
