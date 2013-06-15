@@ -79,6 +79,16 @@
 			
 		}
 
+		var self = this;
+		$(window).on('hashchange', function() {
+			if (location.hash.toString() && location.hash.toString().split('#')[1].split('/')[0] == self.$el.attr('name') ) {
+				$('html, body').animate({scrollTop: self.$el.offset().top - 100}, self.options.slideSpeed, function (){
+					self.activeIdx = (location.hash.toString().split('/')[1] || 1) - 1;
+					self.setActive();
+				});
+			}
+		});
+
 		if (this.options.sliderEffect == 'move') {
 			this.$slides.wrapAll('<div class="slider-wrapper slide"></div>');
 			this.$slides.css({ 'position' : 'absolute', 'width' : '100%',top: 0, left: 0});
