@@ -1622,7 +1622,7 @@ span.question {
 	
 }
 .seria-slider li{
-	
+	overflow: hidden;
 	display:block;
 }
 .seria-slider>li>img{

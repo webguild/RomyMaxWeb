@@ -27,7 +27,7 @@
 	ScrollSLider.defaults = {
 		paginator: 'next',
 		slideSelector: '.tech-item',
-		sliderEffect: 'move', //  fade | move
+		sliderEffect: 'fade', //  fade | move
 		openButtonSelector: 'a.show',
 		closeButtonSelector: 'div.close-block, .close, .hide',
 		hidenBlockSelector: '.hidden-block',
@@ -39,6 +39,7 @@
 		offsetBottom: 70,
 		fadeSpeed: 500,
 		slideSpeed: 300,
+		slideDistance: 0,
 		trottleTime: 200
 	};
 
@@ -92,6 +93,7 @@
 		if (this.options.sliderEffect == 'move') {
 			this.$slides.wrapAll('<div class="slider-wrapper slide"></div>');
 			this.$slides.css({ 'position' : 'absolute', 'width' : '100%',top: 0, left: 0});
+			this.$slides.hide().eq(this.activeIdx).show();
 		}
 
 
@@ -136,7 +138,7 @@
 		}
 		
 
-		//
+		
 		
 
 	};
@@ -153,11 +155,12 @@
 
 		//Смена слайда с анимацией
 		if (this.options.sliderEffect == 'move') {
-			var width = this.$slides.find(':visible').width();
-			//if (prevIdx > this.activeIdx)
-
+			
 			if (prevIdx != this.activeIdx) {
-				this.$slides.eq(this.activeIdx).show().css({'margin-left': width * (prevIdx > this.activeIdx ? -1 : 1) })
+				this.$slides.eq(this.activeIdx).show();
+				var width = this.$slides.parent().width() + this.options.slideDistance;
+				
+				this.$slides.eq(this.activeIdx).css({'margin-left': width * (prevIdx > this.activeIdx ? -1 : 1) })
 					.animate({ 'margin-left' : 0 }, this.options.slideSpeed);
 			
 				this.$slides.eq(prevIdx).animate({'margin-left': width * (prevIdx > this.activeIdx ? 1 : -1)}, this.options.slideSpeed, function () {

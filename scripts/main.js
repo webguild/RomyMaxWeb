@@ -220,28 +220,33 @@ $(function () {
 
 $(function () {
 	
-	var sliders = $('.block .techs').scrollSlider({ fadeSpeed: 500 });
+	var sliders = $('.block .techs').scrollSlider();
 	sliders = sliders.add( $('.seria-slider-wrap').scrollSlider({
 		slideSelector: '.seria-slider li',
 		paginator: '.seria-slider-pag',
 		prevSelector: '.left-arrow',
-		nextSelector: '.right-arrow'
+		nextSelector: '.right-arrow',
+		slideDistance: 120
 	}) );
         /*
 		var sliders = $('.techs').scrollSlider(options);
 		
 		//Настройки по-умолчанию
 		ScrollSLider.defaults = {
-			paginator: 'next', || можно записать в виде селектора
+			paginator: 'next',
 			slideSelector: '.tech-item',
+			sliderEffect: 'fade', //  fade | move
 			openButtonSelector: 'a.show',
-			closeButtonSelector: 'div.close-block',
+			closeButtonSelector: 'div.close-block, .close, .hide',
 			hidenBlockSelector: '.hidden-block',
 			prevSelector: '.prev',
 			nextSelector: '.next',
-			offsetTop: -40,
-			offsetBottom: -40,
-			fadeSpeed: 300
+			offsetTop: 0,
+			offsetBottom: 70,
+			fadeSpeed: 500,
+			slideSpeed: 300,
+			slideDistance: 0,
+			trottleTime: 200
 		};
         */
 });
