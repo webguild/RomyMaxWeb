@@ -575,7 +575,8 @@ background-position: 0 -210px;
 }
 .techs .tech-item{
 	display:none;
-	
+	overflow: hidden;
+   
 	
 }
 .techs .tech-item.active{
@@ -678,6 +679,15 @@ background-position: 0 -210px;
 	margin-top: -23px;
 	padding-top: 23px;
 }
+
+.slider-wrapper.slide {
+    position: relative;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    height: 350px;
+}
+
 
 .slider-band {
 	width: 9999px;

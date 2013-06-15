@@ -27,6 +27,7 @@
 	ScrollSLider.defaults = {
 		paginator: 'next',
 		slideSelector: '.tech-item',
+		sliderEffect: 'move', //  fade | move
 		openButtonSelector: 'a.show',
 		closeButtonSelector: 'div.close-block, .close, .hide',
 		hidenBlockSelector: '.hidden-block',
@@ -78,6 +79,11 @@
 			
 		}
 
+		if (this.options.sliderEffect == 'move') {
+			this.$slides.wrapAll('<div class="slider-wrapper slide"></div>');
+			this.$slides.css({ 'position' : 'absolute', 'width' : '100%',top: 0, left: 0});
+		}
+
 
 		this.setActive();
 
@@ -117,22 +123,46 @@
 			this.maxPagerPosition = this.$pages.length - this.visiblePages + 1;
 			this.$paginator.find('.prev').hide();
 
-			/*this.$paginator.on('click', '.prev, .next', { self: this }, this.pagerPrevNext);
-			this.$paginator.on('mousedown, selectstart', '.prev, .next', function() {return false;} );*/
 		}
 		
+
+		//
+		
+
 	};
 
 	//Смена слайда
 	ScrollSLider.prototype.setActive = function () {
+		if (this.options.sliderEffect == 'move') { 
+			var prevIdx = this.$pages.index( this.$pages.filter('.active') );
+		}
+		
 		//Смена указателя на пейджере
 		this.$pages.eq(this.activeIdx).addClass('active')
 			.siblings().removeClass('active');
 
 		//Смена слайда с анимацией
-		this.$slides.eq(this.activeIdx).fadeIn(this.options.fadeSpeed);
-		this.$slides.not(this.$slides.eq(this.activeIdx)).stop(true, true).fadeOut(0);
+		if (this.options.sliderEffect == 'move') {
+			var width = this.$slides.find(':visible').width();
+			//if (prevIdx > this.activeIdx)
+
+			if (prevIdx != this.activeIdx) {
+				this.$slides.eq(this.activeIdx).show().css({'margin-left': width * (prevIdx > this.activeIdx ? -1 : 1) })
+					.animate({ 'margin-left' : 0 }, this.options.slideSpeed);
 			
+				this.$slides.eq(prevIdx).animate({'margin-left': width * (prevIdx > this.activeIdx ? 1 : -1)}, this.options.slideSpeed, function () {
+					$(this).hide();
+				});
+
+				this.$slides.eq(0).parent().animate({'height':this.$slides.eq(prevIdx).outerHeight()}, this.options.slideSpeed );
+			} else {
+				this.$slides.eq(0).parent().height( this.$slides.eq(prevIdx).outerHeight() );
+			}
+			
+		} else {
+			this.$slides.eq(this.activeIdx).fadeIn(this.options.fadeSpeed);
+			this.$slides.not(this.$slides.eq(this.activeIdx)).stop(true, true).fadeOut(0);
+		}
 
 		//Скрытие/отображение стрелок
 		if (this.activeIdx == 0) {
@@ -204,6 +234,9 @@
 		
 		if ( $this.hasClass('active') ) 
 			return;
+
+		if (self.isSlideOpen)
+			self.$slides.eq(self.activeIdx).find(self.options.closeButtonSelector).eq(0).click();
 
 		self.activeIdx = self.$pages.index(this);
 		self.setActive();
