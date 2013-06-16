@@ -27,7 +27,7 @@
 	ScrollSLider.defaults = {
 		paginator: 'next',
 		slideSelector: '.tech-item',
-		sliderEffect: 'fade', //  fade | move
+		sliderEffect: 'move', //  fade | move
 		openButtonSelector: 'a.show',
 		closeButtonSelector: 'div.close-block, .close, .hide',
 		hidenBlockSelector: '.hidden-block',
