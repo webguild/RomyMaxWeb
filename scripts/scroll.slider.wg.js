@@ -156,7 +156,7 @@
 		//Смена слайда с анимацией
 		if (this.options.sliderEffect == 'move') {
 			
-			if (prevIdx != this.activeIdx) {
+			if (prevIdx != this.activeIdx && prevIdx != -1) {
 				this.$slides.eq(this.activeIdx).show();
 				var width = this.$slides.parent().width() + this.options.slideDistance;
 				
