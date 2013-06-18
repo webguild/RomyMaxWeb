@@ -40,7 +40,7 @@
 		fadeSpeed: 500,
 		slideSpeed: 300,
 		slideDistance: 0,
-		trottleTime: 200
+		trottleTime: 300
 	};
 
 	
