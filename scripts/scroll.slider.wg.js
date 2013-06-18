@@ -327,6 +327,7 @@
 		
 		WindowListener.singelton = this;
 
+		$(window).scroll();
 	}
 
 	//Add Listener 
