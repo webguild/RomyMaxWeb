@@ -156,7 +156,7 @@
 		//Смена слайда с анимацией
 		if (this.options.sliderEffect == 'move') {
 			
-			if (prevIdx != this.activeIdx) {
+			if (prevIdx != this.activeIdx && prevIdx != -1) {
 				this.$slides.eq(this.activeIdx).show();
 				var width = this.$slides.parent().width() + this.options.slideDistance;
 				
@@ -167,7 +167,7 @@
 					$(this).hide();
 				});
 
-				this.$slides.eq(0).parent().animate({'height':this.$slides.eq(prevIdx).outerHeight()}, this.options.slideSpeed );
+				this.$slides.eq(0).parent().animate({'height':this.$slides.eq(this.activeIdx).outerHeight()}, this.options.slideSpeed );
 			} else {
 				this.$slides.eq(0).parent().height( this.$slides.eq(prevIdx).outerHeight() );
 			}
@@ -211,8 +211,12 @@
 		
 		var $this = $(e.currentTarget);
 		var self = e.data.self;
-		
-		$this.closest(self.options.slideSelector)				//Поиск слайда
+		if (self.options.sliderEffect == 'move') {
+			$this.closest('.slider-wrapper.slide').css({ height: 'auto' });
+			$this.closest(self.options.slideSelector).css({ position: 'static' });
+		}
+		//$this.closest('.slider-wrapper.slide').css({ height: 'auto' });
+		$this.closest(self.options.slideSelector)//.css({ position: 'static' })			//Поиск слайда
 			.find(self.options.openButtonSelector).hide()			//Скрытие кнопки отображения а
 			.end().find(self.options.closeButtonSelector).show()		//Отображение кнопки показа
 			.end().find(self.options.hidenBlockSelector).stop(true, true).fadeIn(self.options.fadeSpeed); //Анимация слайда
@@ -232,7 +236,8 @@
 			.end().find(self.options.closeButtonSelector).hide()		//Отображение кнопки показа
 			.end().find(self.options.hidenBlockSelector).stop(true, true).fadeOut(self.options.fadeSpeed); //Анимация слайда
 		
-		$('body,html').stop(true, true).animate({ 'scrollTop': self.$el.offset().top - 100 });
+		$('body,html').stop(true, true).animate({ 'scrollTop': self.$el.offset().top - 100 }, 
+			self.options.sliderEffect == 'move' ? self.options.slideSpeed : self.options.fadeSpeed);
 
 		self.isSlideOpen = false;
 
@@ -261,11 +266,15 @@
 		var $this = $(e.currentTarget);
 		var self = e.data.self;
 		
-		
+		if (self.isSlideOpen)
+			self.$slides.eq(self.activeIdx).find(self.options.closeButtonSelector).eq(0).click();
+
 		self.activeIdx += $this.is(self.options.prevSelector) ? -1 : 1; 
 		self.activeIdx = self.activeIdx < 0 ? 0 : self.activeIdx;
 		self.activeIdx = self.activeIdx >= self.$pages.length ? self.$pages.length - 1 : self.activeIdx;
 		
+
+
 		self.setActive();
 	};
 
