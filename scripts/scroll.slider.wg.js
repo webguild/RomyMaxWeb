@@ -23,6 +23,8 @@
 		this.initialize();
 	}
 
+	window.ScrollSLider = ScrollSLider;
+
 	ScrollSLider.blockAll = true;
 
 	//Настройки плагина по-умолчанию
