@@ -23,6 +23,8 @@
 		this.initialize();
 	}
 
+	ScrollSLider.blockAll = true;
+
 	//Настройки плагина по-умолчанию
 	ScrollSLider.defaults = {
 		paginator: 'next',
@@ -349,6 +351,9 @@
 	WindowListener.prototype.windowMousewheel = function (e, delta, deltaX, deltaY) {
 		var self = e.data.self;
 
+		if (ScrollSLider.blockAll)
+			return;
+
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj = self.listeners[i];
 			if (obj.inRange) {
@@ -364,6 +369,8 @@
 		//console.log($(document).scrollTop())
 		var self = e.data.self;
 		
+		/*if (ScrollSLider.blockAll)
+			return;*/
 		
 		for (var i = 0; i < self.listeners.length; i++) {
 			var obj =  self.listeners[i];
