@@ -25,7 +25,7 @@
 
 	window.ScrollSLider = ScrollSLider;
 
-	ScrollSLider.blockAll = true;
+	ScrollSLider.blockAll = false;
 
 	//Настройки плагина по-умолчанию
 	ScrollSLider.defaults = {
